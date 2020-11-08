@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Alumni yang telah Bergabung</h3>
-    <router-link v-for="alumni in alumnis" :key="alumni.id" class="alumni-link" to="/">
+    <router-link v-for="alumni in alumnis" :key="alumni.id" :to="{ name: 'BioAlumni', params: { id: alumni.id }}" class="alumni-link">
     <div class="card">
       <div class="card-info">
         <p>

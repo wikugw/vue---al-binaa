@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
 import Alumni from "@/views/Alumni.vue";
 import Cerita from "@/views/Cerita.vue";
+import BioAlumni from "@/views/BioAlumni.vue";
 
 const routes = [
   {
@@ -18,6 +19,12 @@ const routes = [
     path: "/alumni",
     name: "Alumni",
     component: Alumni,
+  },
+  {
+    path: "/alumni/:id", // <-- notice the colon
+    name: "BioAlumni",
+    component: BioAlumni,
+    props: true,
   },
 ];
 

@@ -95,6 +95,7 @@ export default {
     .card-image img{
     height: 150px;
     width: 150px;
+    object-fit: cover;
   }
   }
 </style>
