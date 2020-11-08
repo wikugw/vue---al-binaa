@@ -24,12 +24,25 @@
       <img :src="bioDetail.foto" alt="">
     </div>
 
+    <div class="container__cerita">
+      <h2>Cerita dari {{biodata.name}}</h2>
+      <CeritaTemplate
+      v-for="cerita in ceritas"
+      v-bind:key="cerita.id"
+      v-bind:cerita="cerita"
+    />
+    </div>
+
   </div>
 </template>
 <script>
 import axios from 'axios';
+import CeritaTemplate from '../components/CeritaTemplate';
 
 export default {
+  components: {
+    CeritaTemplate
+  },
   data() {
     return {
       biodata: {},
@@ -44,6 +57,7 @@ export default {
       this.biodata = res.data.alumni;
       this.bioDetail = this.biodata.user_detail;
       this.ceritas = this.biodata.cerita;
+      console.log(ceritas);
     })
     .catch(err => (console.log(err)))
   }
@@ -63,7 +77,9 @@ export default {
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
   "info image"
+  "cerita cerita"
   ;
+  grid-row-gap: 50px;
 }
 
 .container__info {
@@ -81,6 +97,19 @@ export default {
 
 .container__sosmed {
   grid-area: sosmed;
+  display: flex;
+  justify-content: center;
+}
+
+.container__cerita {
+  grid-area: cerita;
+  margin-top: 20px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.container__cerita h2 {
+  padding-bottom: 10px;
 }
 
 .container__image img{
@@ -105,8 +134,10 @@ hr {
     grid-template-areas:
     "image"
     "info"
+    "cerita"
     ;
     min-height: 75vh;
+    grid-row-gap: 10px;
   }
 
   .container__image {

@@ -1,21 +1,17 @@
 <template>
   <header>
       <div class="logo">
-        <img :src="logo" alt="tidak ada">
+        <router-link to="/">
+          <img :src="logo" alt="tidak ada">
+        </router-link>
       </div>
       <div class="menu">
         <ul>
           <li class="menu__list poof">
             <router-link  class="menu__link" to="/">Home</router-link>
           </li>
-          <li class="menu__list poof">
-            <router-link  class="menu__link" to="/cerita">Cerita</router-link>
-          </li>
-          <li class="menu__list poof">
-            <router-link class="menu__link" to="/alumni">Alumni</router-link>
-          </li>
           <li class="menu__list">
-            <a class="menu__link" href="#">Login</a>
+            <a class="menu__link" target="_blank" href="http://127.0.0.1:8000/login">Login/Register</a>
           </li>
         </ul>
       </div>
