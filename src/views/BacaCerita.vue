@@ -1,6 +1,11 @@
 <template>
-<div class="container">
-  <div class="container__cerita">
+<NotFound
+    v-if="Object.keys(cerita).length === 0"
+    objek="Cerita"
+  />
+<div class="container" v-else>
+  <div class="oke" >
+    <div class="container__cerita" >
     <img :src="cerita.foto ? cerita.foto : imgDefault" alt="">
     <h1>{{cerita.judul}}</h1>
     <p>
@@ -14,7 +19,7 @@
 
   <hr>
 
-  <router-link class="alumni-link" :to="`/alumni/${penulis.id}`">
+  <router-link class="alumni-link" :to="`/alumni/${penulis.id}`" >
     <div class="container__penulis">
       <div class="penulis__foto">
         <img :src="penulisDetail.foto ? penulisDetail.foto : imageAvatar" alt="">
@@ -26,6 +31,7 @@
       </div>
   </div>
   </router-link>
+  </div>
 
 </div>
 
@@ -34,8 +40,12 @@
 <script>
 import axios from 'axios';
 var moment = require('moment');
+import NotFound from '../components/NotFound';
 
 export default {
+  components :{
+    NotFound
+  },
   data() {
     return {
       moment: moment,

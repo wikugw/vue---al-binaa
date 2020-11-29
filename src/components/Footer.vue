@@ -1,5 +1,5 @@
 <template>
-  <p>Made by 💘 - 2020</p>
+  <p>Made by <font-awesome-icon :icon="['fas', 'heart']"></font-awesome-icon> - 2020</p>
 </template>
 
 <style scoped>

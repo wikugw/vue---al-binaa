@@ -4,6 +4,7 @@ import Alumni from "@/views/Alumni.vue";
 import Cerita from "@/views/Cerita.vue";
 import BioAlumni from "@/views/BioAlumni.vue";
 import BacaCerita from "@/views/BacaCerita.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
   {
@@ -33,6 +34,10 @@ const routes = [
     component: BioAlumni,
     props: true,
   },
+  {
+    path: "/:catchAll(.*)",
+    component: NotFound,
+  }
 ];
 
 const router = createRouter({

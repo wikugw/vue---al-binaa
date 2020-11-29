@@ -1,6 +1,9 @@
 <template>
-  <div class="container">
-    <div class="container__info">
+<NotFound v-if="Object.keys(biodata).length === 0" objek="Alumni" />
+  <div class="container" v-else>
+
+    <div class="oke" >
+      <div class="container__info">
       <h2>{{biodata.name}}</h2>
       <h4>{{bioDetail.title}}</h4>
       <p>
@@ -27,10 +30,12 @@
     <div class="container__cerita">
       <h2>Cerita dari {{biodata.name}}</h2>
       <CeritaTemplate
+      :v-if="ceritas"
       v-for="cerita in ceritas"
       v-bind:key="cerita.id"
       v-bind:cerita="cerita"
     />
+    </div>
     </div>
 
   </div>
@@ -38,10 +43,12 @@
 <script>
 import axios from 'axios';
 import CeritaTemplate from '../components/CeritaTemplate';
+import NotFound from '../components/NotFound';
 
 export default {
   components: {
-    CeritaTemplate
+    CeritaTemplate,
+    NotFound
   },
   data() {
     return {
@@ -57,7 +64,6 @@ export default {
       this.biodata = res.data.alumni;
       this.bioDetail = this.biodata.user_detail;
       this.ceritas = this.biodata.cerita;
-      console.log(ceritas);
     })
     .catch(err => (console.log(err)))
   }
@@ -70,6 +76,10 @@ export default {
 }
 
 .container {
+
+}
+
+.oke {
   margin-top: 20px;
   margin-left: 130px;
   display: grid;

@@ -49,10 +49,6 @@ export default {
   }
 }
 
-.container h3 {
-  margin-block-start: 0;
-}
-
 .alumni-link {
   text-decoration: none;
   color: black;
