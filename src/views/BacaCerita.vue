@@ -14,6 +14,7 @@
         <span>{{penulis.name}}</span>
         pada
         <span>{{moment(cerita.created_at).format('LLL')}}</span>
+        | diakses sebanyak <span>{{cerita.visited_count}}</span> kali
       </p>
       <p v-html="cerita.cerita"></p>
     </div>
