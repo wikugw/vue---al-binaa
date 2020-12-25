@@ -3,34 +3,53 @@
     v-if="Object.keys(cerita).length === 0"
     objek="Cerita"
   />
+
 <div class="container" v-else>
   <div class="oke" >
     <div class="container__cerita" >
-    <img :src="cerita.foto ? cerita.foto : imgDefault" alt="">
-    <h1>{{cerita.judul}}</h1>
-    <p>
-      oleh
-      <span>{{penulis.name}}</span>
-      pada
-      <span>{{moment(cerita.created_at).format('LLL')}}</span>
-    </p>
-    <p v-html="cerita.cerita"></p>
+      <img :src="cerita.foto ? cerita.foto : imgDefault" alt="">
+      <h1>{{cerita.judul}}</h1>
+      <p>
+        oleh
+        <span>{{penulis.name}}</span>
+        pada
+        <span>{{moment(cerita.created_at).format('LLL')}}</span>
+      </p>
+      <p v-html="cerita.cerita"></p>
+    </div>
+
+    <hr>
+
+    <router-link class="alumni-link" :to="`/alumni/${penulis.id}`" >
+      <div class="container__penulis">
+        <div class="penulis__foto">
+          <img :src="penulisDetail.foto ? penulisDetail.foto : imageAvatar" alt="">
+        </div>
+        <div class="penulis__bio">
+          <h4 class="ditulis">Ditulis Oleh</h4>
+          <h3 class="penulis">{{penulis.name}}</h3>
+          <h4 class="title">{{penulisDetail.title}}</h4>
+        </div>
+    </div>
+    </router-link>
   </div>
 
   <hr>
 
-  <router-link class="alumni-link" :to="`/alumni/${penulis.id}`" >
-    <div class="container__penulis">
-      <div class="penulis__foto">
-        <img :src="penulisDetail.foto ? penulisDetail.foto : imageAvatar" alt="">
-      </div>
-      <div class="penulis__bio">
-        <h4 class="ditulis">Ditulis Oleh</h4>
-        <h3 class="penulis">{{penulis.name}}</h3>
-        <h4 class="title">{{penulisDetail.title}}</h4>
-      </div>
-  </div>
-  </router-link>
+  <div class="comment">
+    <h3>Comments</h3>
+    <CommentInput 
+      v-bind:cerita="cerita" 
+      v-on:sendcomment="addComment"
+    />
+    <div class="no-comment" v-if="comments.length == 0">
+      <h4>there is no comment</h4>
+    </div>
+    <Comment v-else 
+      v-for="comment in comments"
+      v-bind:key="comment.id"
+      v-bind:comment="comment"
+    />
   </div>
 
 </div>
@@ -41,10 +60,14 @@
 import axios from 'axios';
 var moment = require('moment');
 import NotFound from '../components/NotFound';
+import Comment from '../components/Comment';
+import CommentInput from '../components/CommentInput';
 
 export default {
   components :{
-    NotFound
+    NotFound,
+    Comment,
+    CommentInput
   },
   data() {
     return {
@@ -53,7 +76,8 @@ export default {
       penulis: {},
       penulisDetail: {},
       imageAvatar: require('../assets/avatar.png'),
-      imgDefault : require('../assets/cerita.jpg')
+      imgDefault : require('../assets/cerita.jpg'),
+      comments : []
     }
   },
   props: ["id"],
@@ -63,8 +87,20 @@ export default {
       this.cerita = res.data.cerita;
       this.penulis = res.data.cerita.user;
       this.penulisDetail = res.data.cerita.user.user_detail;
+      this.comments = res.data.cerita.comments;
+      console.log(this.comments);
     })
     .catch(err => (console.log(err)))
+  },
+  methods: {
+    addComment(data) {
+      axios.post("http://127.0.0.1:8000/api/cerita/" + this.cerita.id, data)
+        .then( res => {
+          console.log(res.data.cerita.comments);
+          this.comments = res.data.cerita.comments;
+        }
+      );
+    }
   }
 }
 </script>
@@ -122,8 +158,8 @@ export default {
   }
 
   hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     width: 50vh;
   }
 
@@ -141,5 +177,13 @@ export default {
     text-decoration: none;
     color: black;
     font-weight: normal;
+  }
+
+  .no-comment {
+    margin: 50px 0;
+  }
+
+  .no-comment h4 {
+    text-align: center;
   }
 </style>
