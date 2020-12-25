@@ -13,7 +13,7 @@
         {{ceritas.length}} cerita dibagikan
       </p>
       <p><font-awesome-icon :icon="['fas', 'phone']" /> <span> : </span> {{bioDetail.no_hp}}</p>
-      <p><font-awesome-icon :icon="['fas', 'home']" /> <span> : </span> {{bioDetail.alamat}}</p>
+      <p><font-awesome-icon :icon="['fas', 'home']" /> <span> : </span> {{alamat.adrress}}, {{alamat.city.city_name}}, {{alamat.province.province}}, kode pos : {{alamat.postal_code}}</p>
       <hr>
       <p>Hubungkan diri anda dengan {{biodata.name}} pada :</p>
     <div class="container__sosmed">
@@ -54,7 +54,8 @@ export default {
     return {
       biodata: {},
       bioDetail: {},
-      ceritas: []
+      ceritas: [],
+      alamat: {}
     }
   },
   props: ["id"],
@@ -64,6 +65,8 @@ export default {
       this.biodata = res.data.alumni;
       this.bioDetail = this.biodata.user_detail;
       this.ceritas = this.biodata.cerita;
+      this.alamat = this.biodata.address;
+      console.log(this.alamat);
     })
     .catch(err => (console.log(err)))
   }
