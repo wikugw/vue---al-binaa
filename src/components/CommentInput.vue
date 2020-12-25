@@ -4,12 +4,15 @@
             <h4 >What's your opinion about this story?</h4>
             <div class="reaction__container">
                 <div class="reaction__placholder">
-                    <a href="#"><font-awesome-icon :icon="['fas', 'smile']" /></a>
-                    <p>{{cerita.happy_reaction_count}} total</p>
+                    <a href="#" @click.prevent="handleHappyReaction">
+                        <font-awesome-icon :icon="['fas', 'smile']" />
+                    </a>
+                    <p>{{happyTotal}} total</p>
                 </div>
                 <div class="reaction__placholder">
-                    <a href="#"><font-awesome-icon :icon="['fas', 'frown']" /></a>
-                    <p>{{cerita.sad_reaction_count}} total</p>
+                    <a href="#" @click.prevent="handleSadReaction">
+                        <font-awesome-icon :icon="['fas', 'frown']" /></a>
+                    <p>{{sadTotal}} total</p>
                 </div>
             </div>
         </div>
@@ -32,6 +35,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     props : ['cerita'],
     data(){
@@ -39,6 +43,8 @@ export default {
             email: '',
             comment: '',
             errors: [],
+            happyTotal: this.cerita.happy_reaction_count,
+            sadTotal: this.cerita.sad_reaction_count,
         }
     },
     methods: {
@@ -50,17 +56,32 @@ export default {
                     'comment' : this.comment
                 };
                 this.$emit('sendcomment', data);
-            }
-            
-            this.errors = [];
+                this.email = '';
+                this.comment = '';
+                this.errors= [];
+            } else {
+                 this.errors = [];
 
-            if (!this.email) {
-                this.errors.push('Name required.');
+                if (!this.email) {
+                    this.errors.push('Name required.');
+                }
+                if (!this.comment) {
+                    this.errors.push('Comment required.');
+                } 
             }
-            if (!this.comment) {
-                this.errors.push('Age required.');
-            } 
             e.preventDefault();
+        },
+        handleHappyReaction(){
+            axios.get(`http://127.0.0.1:8000/api/cerita/${this.cerita.id}/happy-reaction`)
+                .then(res => {
+                    this.happyTotal = res.data.happy_reaction_count;
+            });
+        },
+        handleSadReaction(){
+                axios.get(`http://127.0.0.1:8000/api/cerita/${this.cerita.id}/sad-reaction`)
+                .then(res => {
+                    this.sadTotal = res.data.sad_reaction_count;
+            });    
         }
     }
 }
